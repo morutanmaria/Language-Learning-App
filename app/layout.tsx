@@ -1,10 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Limelight, Geist_Mono } from "next/font/google";
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs'
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
+import { ExitModal } from "@/components/modals/exit-modal";
+import { HeartsModal } from "@/components/modals/hearts-modal";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const limelight = Limelight({
+  variable: "--font-limelight",
   subsets: ["latin"],
+  weight: "400"
 });
 
 const geistMono = Geist_Mono({
@@ -23,12 +35,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider afterSignOutUrl="/">
+      <html lang="en">
+        <body
+          className={`${limelight.variable} ${geistMono.variable} antialiased`}
+        >
+          <Toaster/>
+          <ExitModal/>
+          <HeartsModal/>
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
